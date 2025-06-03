@@ -72,3 +72,4 @@ function Calendar({
 }
 
 export { Calendar }
+export { DatePicker } from "@/components/ui/date-picker"
