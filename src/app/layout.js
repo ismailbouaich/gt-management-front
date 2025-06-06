@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
+import Calculator from "@/components/calculator";
 
 
 const geistSans = Geist({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             {children}
+            
           </ThemeProvider>
       </body>
     </html>
