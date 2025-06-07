@@ -13,6 +13,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
+
 export function NavMain({ items }) {
   return (
     <SidebarGroup>
@@ -28,13 +29,11 @@ export function NavMain({ items }) {
                   <PlusCircleIcon />
                   <span>Quick Create</span>
                 </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56">
+              </DropdownMenuTrigger>              <DropdownMenuContent align="start" className="w-56">
               <Link href="/dashboard/products/create"> <DropdownMenuItem className="cursor-pointer" ><PlusCircleIcon />  Product  </DropdownMenuItem></Link>
               <Link href="/dashboard/transactions/sell/create">  <DropdownMenuItem className="cursor-pointer" > <PlusCircleIcon />  Sell    </DropdownMenuItem></Link>
               <Link href="/dashboard/transactions/purchase/create">  <DropdownMenuItem className="cursor-pointer" > <PlusCircleIcon />  Purchase </DropdownMenuItem></Link>
-              <Link href="/dashboard/customers/create">  <DropdownMenuItem className="cursor-pointer" > <PlusCircleIcon />  Customer </DropdownMenuItem></Link>
-              <Link href="/dashboard/products/expense">  <DropdownMenuItem className="cursor-pointer" > <PlusCircleIcon />  Expense  </DropdownMenuItem></Link>
+              <Link href="/dashboard/customers/create">  <DropdownMenuItem className="cursor-pointer" > <PlusCircleIcon />  Customer </DropdownMenuItem></Link>              <Link href="/dashboard/transactions/expense?quick=true">  <DropdownMenuItem className="cursor-pointer" > <PlusCircleIcon />  Expense  </DropdownMenuItem></Link>
               </DropdownMenuContent>
             </DropdownMenu>
             <Button size="icon" className="h-9 w-9 shrink-0 group-data-[collapsible=icon]:opacity-0" variant="outline">

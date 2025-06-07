@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { SettingsIcon } from "lucide-react"
 import { DraggableCalculator } from "@/components/draggable-calculator"
+import { SettingsPanel } from "@/components/settings-panel"
 
 export default function SettingsPage() {
   return (
@@ -15,14 +16,7 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="flex-1 overflow-auto p-6">
-              <div className="grid gap-6">
-                <div className="rounded-lg border">
-                  <div className="p-6">
-                    <h2 className="text-lg font-semibold">System Settings</h2>
-                    <p className="text-sm text-muted-foreground">Configure your system preferences and application settings.</p>
-                  </div>
-                </div>
-              </div>
+              <SettingsPanel />
             </div>
           </div>
   )
