@@ -6,15 +6,7 @@ import { DraggableCalculator } from "@/components/draggable-calculator"
 
 export default function SettingsPage() {
   return (
-    <SidebarProvider
-      style={{
-        "--sidebar-width": "calc(var(--spacing) * 72)",
-        "--header-height": "calc(var(--spacing) * 12)"
-      }}>
-      <div className="flex h-full">
-        <AppSidebar variant="inset" />
-        <SidebarInset className="flex flex-col w-full">
-          <SiteHeader />
+    
           <div className="flex flex-1 flex-col">
             <div className="flex items-center border-b px-6 py-5">
               <div className="flex items-center gap-2">
@@ -33,9 +25,5 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-        </SidebarInset>
-      </div>
-      <DraggableCalculator />
-    </SidebarProvider>
   )
 }
