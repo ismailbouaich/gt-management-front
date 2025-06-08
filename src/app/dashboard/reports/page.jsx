@@ -1,3 +1,4 @@
+import { ReportsManager } from "@/components/reports-manager"
 import { BarChartIcon } from "lucide-react"
 
 export default function ReportsPage() {
@@ -11,12 +12,7 @@ export default function ReportsPage() {
       </div>
       <div className="flex-1 overflow-auto p-6">
         <div className="grid gap-6">
-          <div className="rounded-lg border">
-            <div className="p-6">
-              <h2 className="text-lg font-semibold">Reports Dashboard</h2>
-              <p className="text-sm text-muted-foreground">View and analyze your business data with comprehensive reports.</p>
-            </div>
-          </div>
+         <ReportsManager />
         </div>
       </div>
     </div>
