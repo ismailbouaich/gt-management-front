@@ -35,8 +35,8 @@ export function FloatingAIButton() {
           <SheetContent className="w-[400px] sm:w-[500px] p-0 flex flex-col">
             <SheetHeader className="p-6 pb-4 border-b flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
-                  <Bot className="h-5 w-5 text-white" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-full">
+                  <Bot className="h-5 w-5" />
                 </div>
                 <div>
                   <SheetTitle className="text-xl">AI Assistant</SheetTitle>

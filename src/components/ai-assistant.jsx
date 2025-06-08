@@ -107,8 +107,8 @@ export function AIAssistant() {
       <Card className="h-full flex flex-col border-0 shadow-none">
         <CardHeader className="pb-3 border-b flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
-              <Sparkles className="h-4 w-4 text-white" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-full">
+              <Sparkles className="h-4 w-4" />
             </div>
             <div>
               <CardTitle className="text-lg">AI Assistant</CardTitle>
@@ -135,9 +135,9 @@ export function AIAssistant() {
                 >
                   <Avatar className="w-8 h-8 flex-shrink-0">
                     <AvatarFallback className={
-                      message.role === 'user' 
-                        ? 'bg-blue-100 text-blue-600' 
-                        : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                      message.role === 'user'
+
+                       
                     }>
                       {message.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                     </AvatarFallback>
@@ -147,7 +147,7 @@ export function AIAssistant() {
                     <div
                       className={`inline-block px-3 py-2 rounded-lg text-sm whitespace-pre-wrap ${
                         message.role === 'user'
-                          ? 'bg-blue-500 text-white rounded-br-sm'
+                          ? 'rounded-br-sm'
                           : 'bg-gray-100 text-gray-900 rounded-bl-sm border'
                       }`}
                     >
@@ -180,7 +180,7 @@ export function AIAssistant() {
               {isLoading && (
                 <div className="flex items-start gap-3">
                   <Avatar className="w-8 h-8 flex-shrink-0">
-                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                    <AvatarFallback className=" ">
                       <Bot className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
