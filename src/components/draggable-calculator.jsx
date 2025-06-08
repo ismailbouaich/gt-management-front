@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { CalculatorIcon, XIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Calculator from "./calculator"
 
 export function DraggableCalculator() {
@@ -11,10 +12,9 @@ export function DraggableCalculator() {
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const calculatorRef = useRef(null)
-
   // Update position to center of screen when component mounts or calculator is toggled
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && typeof window !== 'undefined') {
       const centerX = Math.max(window.innerWidth / 2 - 160, 0); // 160 is half of calculator width (320px)
       const centerY = Math.max(window.innerHeight / 2 - 200, 0); // 200 is approximately half of calculator height
       setPosition({ x: centerX, y: centerY });
@@ -63,13 +63,18 @@ export function DraggableCalculator() {
       document.removeEventListener("mouseup", endDrag)
     }
   }, [isDragging])
-
   return (
-    <>
-      {/* Toggle button in bottom left */}
-      <Button className="fixed bottom-4 right-4 rounded-full h-12 w-12 p-0 shadow-lg z-50 cursor-pointer" onClick={toggleCalculator}>
-        <CalculatorIcon className="h-6 w-6" />
-      </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button className="fixed bottom-4 right-4 rounded-full h-12 w-12 p-0 shadow-lg z-50 cursor-pointer" onClick={toggleCalculator}>
+            <CalculatorIcon className="h-6 w-6" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="left" className="mr-2">
+          <p>Open Calculator</p>
+        </TooltipContent>
+      </Tooltip>
 
       {/* Draggable calculator */}
       {isVisible && (
@@ -93,9 +98,8 @@ export function DraggableCalculator() {
           </div>
           <div className="p-2">
             <Calculator />
-          </div>
-        </div>
+          </div>        </div>
       )}
-    </>
+    </TooltipProvider>
   )
 }
