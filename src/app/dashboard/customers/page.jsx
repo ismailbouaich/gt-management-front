@@ -1,4 +1,5 @@
 import { UsersIcon } from "lucide-react"
+import { CustomerManager } from "@/components/customer-manager"
 
 export default function CustomersPage() {
   return (
@@ -10,14 +11,7 @@ export default function CustomersPage() {
         </div>
       </div>
       <div className="flex-1 overflow-auto p-6">
-        <div className="grid gap-6">
-          <div className="rounded-lg border">
-            <div className="p-6">
-              <h2 className="text-lg font-semibold">Customer Management</h2>
-              <p className="text-sm text-muted-foreground">Manage your customers and their information.</p>
-            </div>
-          </div>
-        </div>
+        <CustomerManager />
       </div>
     </div>
   )
