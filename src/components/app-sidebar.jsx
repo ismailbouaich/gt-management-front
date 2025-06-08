@@ -23,6 +23,7 @@ import {
   UserIcon,
   UsersIcon,
   WalletIcon,
+  FactoryIcon,
 } from "lucide-react"
 
 import { NavMain } from "./nav-main"
@@ -47,8 +48,7 @@ const data = {
     name: "shadcn",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
+  },  navMain: [
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -58,6 +58,11 @@ const data = {
       title: "Reports",
       url: "/dashboard/reports",
       icon: BarChartIcon,
+    },
+    {
+      title: "Production",
+      url: "/dashboard/production",
+      icon: FactoryIcon,
     },
     {
       title: "Customers",

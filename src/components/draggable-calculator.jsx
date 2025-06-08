@@ -11,10 +11,9 @@ export function DraggableCalculator() {
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const calculatorRef = useRef(null)
-
   // Update position to center of screen when component mounts or calculator is toggled
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && typeof window !== 'undefined') {
       const centerX = Math.max(window.innerWidth / 2 - 160, 0); // 160 is half of calculator width (320px)
       const centerY = Math.max(window.innerHeight / 2 - 200, 0); // 200 is approximately half of calculator height
       setPosition({ x: centerX, y: centerY });

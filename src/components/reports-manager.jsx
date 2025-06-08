@@ -147,6 +147,9 @@ const generateStockData = () => {
     'Car Oil', 'Tire', 'Air Freshener', 'Car Cover', 'Tool Kit'
   ]
   
+  // Use a fixed date to prevent hydration mismatches
+  const baseDate = new Date('2024-12-01')
+  
   for (let i = 0; i < 50; i++) {
     const currentStock = Math.floor(Math.random() * 200) + 1
     const minStock = Math.floor(Math.random() * 20) + 5
@@ -172,7 +175,7 @@ const generateStockData = () => {
               currentStock <= minStock * 2 ? 'Medium Stock' : 'In Stock',
       reorderPoint: minStock * 1.5,
       supplier: `Supplier ${Math.floor(Math.random() * 10) + 1}`,
-      lastRestocked: format(subDays(new Date(), Math.floor(Math.random() * 30)), 'yyyy-MM-dd'),
+      lastRestocked: format(subDays(baseDate, Math.floor(Math.random() * 30)), 'yyyy-MM-dd'),
     })
   }
   
@@ -187,24 +190,26 @@ export function ReportsManager() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterCategory, setFilterCategory] = useState('all')
   const [loading, setLoading] = useState(false)
-  
-  // Date calculations
-  const dateRanges = {
-    today: { start: new Date(), end: new Date() },
-    yesterday: { start: subDays(new Date(), 1), end: subDays(new Date(), 1) },
-    last7: { start: subDays(new Date(), 7), end: new Date() },
-    last30: { start: subDays(new Date(), 30), end: new Date() },
-    thisMonth: { start: startOfMonth(new Date()), end: endOfMonth(new Date()) },
-    lastMonth: { 
-      start: startOfMonth(subDays(startOfMonth(new Date()), 1)), 
-      end: endOfMonth(subDays(startOfMonth(new Date()), 1)) 
-    },
-    thisYear: { start: startOfYear(new Date()), end: endOfYear(new Date()) },
-    lastYear: { 
-      start: startOfYear(subDays(startOfYear(new Date()), 1)), 
-      end: endOfYear(subDays(startOfYear(new Date()), 1)) 
-    },
-  }
+    // Date calculations - Use useMemo to prevent hydration mismatches
+  const dateRanges = useMemo(() => {
+    const now = new Date()
+    return {
+      today: { start: now, end: now },
+      yesterday: { start: subDays(now, 1), end: subDays(now, 1) },
+      last7: { start: subDays(now, 7), end: now },
+      last30: { start: subDays(now, 30), end: now },
+      thisMonth: { start: startOfMonth(now), end: endOfMonth(now) },
+      lastMonth: { 
+        start: startOfMonth(subDays(startOfMonth(now), 1)), 
+        end: endOfMonth(subDays(startOfMonth(now), 1)) 
+      },
+      thisYear: { start: startOfYear(now), end: endOfYear(now) },
+      lastYear: { 
+        start: startOfYear(subDays(startOfYear(now), 1)), 
+        end: endOfYear(subDays(startOfYear(now), 1)) 
+      },
+    }
+  }, [])
   
   const selectedDateRange = dateRanges[dateRange]
   
