@@ -116,8 +116,11 @@ export function CustomerManager({ quickCreate = false }) {
   const handleDelete = (id) => {
     setCustomers(prev => prev.filter(customer => customer.id !== id))
   }
+
   const handleEdit = (customer) => {
-    window.location.href = `/dashboard/customers/${customer.id}/edit`
+    // For now, redirect to a customer edit page (you can implement this later)
+    // window.location.href = `/dashboard/customers/edit/${customer.id}`
+    console.log("Edit customer:", customer)
   }
 
   const getStatusColor = (status) => {
