@@ -24,11 +24,16 @@ import {
   UsersIcon,
   WalletIcon,
   FactoryIcon,
+  ShieldAlertIcon,
+  UserLock,
+  ShieldUser,
+  Bot,
 } from "lucide-react"
 
 import { NavMain } from "./nav-main"
 import { NavSecondary } from "./nav-secondary"
 import { NavUser } from "./nav-user"
+import { NavUsers } from "./nav-users"
 import { NavTransactions } from "./nav-transactions"
 import { NavProducts } from "./nav-products"
 import { NavCheques } from "./nav-cheques"
@@ -73,6 +78,24 @@ const data = {
       title: "Settings",
       url: "/dashboard/settings",
       icon: SettingsIcon,
+    },
+  ],
+
+  navUsers: [
+    {
+      title: "Users",
+      url: "/dashboard/users",
+      icon: UsersIcon,
+    },
+    {
+      title: "Roles",
+      url: "/dashboard/users/roles",
+      icon: UserLock,
+    },
+    {
+      title: "Permissions",
+      url: "/dashboard/users/permissions",
+      icon: ShieldUser,
     },
   ],
   navProducts: [
@@ -180,8 +203,12 @@ const data = {
       url: "/dashboard/cheques/supplier-guarantee-cheques",
       icon: LockIcon,
     },
-  ],
-  navSecondary: [
+  ],  navSecondary: [
+    {
+      title: "AI Assistant",
+      url: "/dashboard/ai-assistant",
+      icon: Bot,
+    },
     {
       title: "Help Center",
       url: "/dashboard/help-center",
@@ -204,9 +231,9 @@ export function AppSidebar(props) {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
+      </SidebarHeader>      <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavUsers items={data.navUsers} />
         <NavProducts items={data.navProducts} />
         <NavTransactions items={data.navTransactions} />
         <NavCheques items={data.navCheques} />

@@ -3,6 +3,7 @@
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { DraggableCalculator } from "@/components/draggable-calculator";
+import { FloatingAIButton } from "@/components/floating-ai-button";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
@@ -25,9 +26,11 @@ export default function DashboardLayout({ children }) {
               {children}
             </div>
           </div>
-        </div>
-      </SidebarInset>
-       <DraggableCalculator />
+        </div>      </SidebarInset>
+      <div className="fixed bottom-4 right-4 z-50">
+        <DraggableCalculator />
+        <FloatingAIButton />
+      </div>
     </SidebarProvider>
   );
 }
