@@ -1,0 +1,235 @@
+{
+  "salesData": [
+    {
+      "id": 1,
+      "date": "2024-12-01",
+      "customer": "Customer 1",
+      "amount": 450,
+      "items": 3,
+      "status": "Completed",
+      "paymentMethod": "Card",
+      "profit": 120
+    },
+    {
+      "id": 2,
+      "date": "2024-12-01",
+      "customer": "Customer 2",
+      "amount": 280,
+      "items": 2,
+      "status": "Completed",
+      "paymentMethod": "Cash",
+      "profit": 80
+    },
+    {
+      "id": 3,
+      "date": "2024-12-02",
+      "customer": "Customer 3",
+      "amount": 650,
+      "items": 4,
+      "status": "Pending",
+      "paymentMethod": "Bank Transfer",
+      "profit": 180
+    }
+  ],
+  "purchaseData": [
+    {
+      "id": 1,
+      "date": "2024-12-01",
+      "supplier": "Supplier 1",
+      "amount": 1200,
+      "items": 5,
+      "status": "Received",
+      "paymentStatus": "Paid"
+    },
+    {
+      "id": 2,
+      "date": "2024-12-01",
+      "supplier": "Supplier 2",
+      "amount": 800,
+      "items": 3,
+      "status": "Pending",
+      "paymentStatus": "Due"
+    }
+  ],
+  "expenseData": [
+    {
+      "id": 1,
+      "date": "2024-12-01",
+      "category": "Office Supplies",
+      "description": "Printer paper and ink",
+      "amount": 150,
+      "status": "Approved",
+      "paymentMethod": "Card"
+    },
+    {
+      "id": 2,
+      "date": "2024-12-01",
+      "category": "Utilities",
+      "description": "Monthly electricity bill",
+      "amount": 300,
+      "status": "Approved",
+      "paymentMethod": "Bank Transfer"
+    }
+  ],
+  "stockData": [
+    {
+      "id": 1,
+      "name": "Wireless Headphones 1",
+      "category": "Electronics",
+      "sku": "SKU0001",
+      "currentStock": 45,
+      "minStock": 10,
+      "maxStock": 200,
+      "unitCost": 25,
+      "unitPrice": 45,
+      "totalValue": 1125,
+      "soldLastMonth": 15,
+      "turnoverRate": 0.25,
+      "status": "In Stock",
+      "reorderPoint": 15,
+      "supplier": "Supplier 1",
+      "lastRestocked": "2024-11-15"
+    },
+    {
+      "id": 2,
+      "name": "Laptop Stand 1",
+      "category": "Electronics",
+      "sku": "SKU0002",
+      "currentStock": 8,
+      "minStock": 5,
+      "maxStock": 100,
+      "unitCost": 15,
+      "unitPrice": 30,
+      "totalValue": 240,
+      "soldLastMonth": 22,
+      "turnoverRate": 0.73,
+      "status": "Low Stock",
+      "reorderPoint": 7.5,
+      "supplier": "Supplier 2",
+      "lastRestocked": "2024-11-20"
+    }
+  ],
+  "categories": [
+    "Electronics",
+    "Clothing", 
+    "Books",
+    "Home & Garden",
+    "Sports",
+    "Beauty",
+    "Food",
+    "Automotive"
+  ],  "expenseCategories": [
+    "Office Supplies",
+    "Utilities",
+    "Marketing",
+    "Travel",
+    "Equipment",
+    "Software",
+    "Rent"
+  ],
+  "productNames": [
+    "Wireless Headphones",
+    "Laptop Stand",
+    "Smart Watch",
+    "USB Cable",
+    "Phone Case",
+    "T-Shirt",
+    "Jeans",
+    "Sneakers",
+    "Jacket",
+    "Hat",
+    "Novel",
+    "Textbook",
+    "Magazine",
+    "Notebook",
+    "Pen Set",
+    "Plant Pot",
+    "Garden Tool",
+    "Lamp",
+    "Cushion",
+    "Candle",
+    "Basketball",
+    "Running Shoes",
+    "Yoga Mat",
+    "Protein Powder",
+    "Water Bottle",
+    "Face Cream",
+    "Shampoo",
+    "Lipstick",
+    "Perfume",
+    "Moisturizer",
+    "Coffee Beans",
+    "Protein Bar",
+    "Chocolate",
+    "Tea Bags",
+    "Spices",
+    "Car Oil",
+    "Tire",
+    "Air Freshener",
+    "Car Cover",
+    "Tool Kit"
+  ],
+  "suppliers": [
+    "Supplier 1",
+    "Supplier 2",
+    "Supplier 3",
+    "Supplier 4",
+    "Supplier 5",
+    "Supplier 6",
+    "Supplier 7",
+    "Supplier 8",
+    "Supplier 9",
+    "Supplier 10",
+    "Supplier 11",
+    "Supplier 12",
+    "Supplier 13",
+    "Supplier 14",
+    "Supplier 15",
+    "Supplier 16",
+    "Supplier 17",
+    "Supplier 18",
+    "Supplier 19",
+    "Supplier 20"
+  ],
+  "paymentMethods": [
+    "Cash",
+    "Card",
+    "Bank Transfer"
+  ],
+  "paymentStatuses": [
+    "Paid",
+    "Due",
+    "Partial"
+  ],
+  "saleStatuses": [
+    "Completed",
+    "Pending"
+  ],
+  "purchaseStatuses": [
+    "Received",
+    "Pending"
+  ],
+  "expenseStatuses": [
+    "Approved",
+    "Pending"
+  ],
+  "stockStatuses": [
+    "In Stock",
+    "Medium Stock",
+    "Low Stock",
+    "Out of Stock"
+  ],
+  "chartColors": [
+    "#0088FE",
+    "#00C49F",
+    "#FFBB28",
+    "#FF8042",
+    "#8884D8",
+    "#82CA9D",
+    "#FFC658"
+  ],
+  "baseDate": "2024-12-01",
+  "customerCount": 100,
+  "supplierCount": 20,
+  "productCount": 50
+}

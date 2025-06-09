@@ -7,16 +7,78 @@ const anthropic = new Anthropic({
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
 
-// Fallback responses for demo purposes
+// Action detection for report generation and other tasks
+const detectActions = (message) => {
+  const lowerMessage = message.toLowerCase();
+  const actions = [];
+
+  // Report generation actions
+  if (lowerMessage.includes('generate') || lowerMessage.includes('download') || lowerMessage.includes('export') || lowerMessage.includes('create report')) {
+    if (lowerMessage.includes('sales') && lowerMessage.includes('report')) {
+      actions.push({ type: 'GENERATE_REPORT', reportType: 'sales', description: 'Generate Sales Report' });
+    }
+    if (lowerMessage.includes('purchase') && lowerMessage.includes('report')) {
+      actions.push({ type: 'GENERATE_REPORT', reportType: 'purchases', description: 'Generate Purchase Report' });
+    }
+    if (lowerMessage.includes('expense') && lowerMessage.includes('report')) {
+      actions.push({ type: 'GENERATE_REPORT', reportType: 'expenses', description: 'Generate Expense Report' });
+    }
+    if (lowerMessage.includes('stock') || lowerMessage.includes('inventory')) {
+      if (lowerMessage.includes('report')) {
+        actions.push({ type: 'GENERATE_REPORT', reportType: 'stock', description: 'Generate Stock Report' });
+      }
+    }
+    if (lowerMessage.includes('analytic') && lowerMessage.includes('report')) {
+      actions.push({ type: 'GENERATE_REPORT', reportType: 'analytics', description: 'Generate Analytics Report' });
+    }
+    if ((lowerMessage.includes('all') || lowerMessage.includes('complete')) && lowerMessage.includes('report')) {
+      actions.push({ type: 'GENERATE_REPORT', reportType: 'all', description: 'Generate Complete Business Report' });
+    }
+  }
+
+  // Navigation actions
+  if (lowerMessage.includes('show') || lowerMessage.includes('open') || lowerMessage.includes('go to')) {
+    if (lowerMessage.includes('dashboard')) {
+      actions.push({ type: 'NAVIGATE', path: '/dashboard', description: 'Navigate to Dashboard' });
+    }
+    if (lowerMessage.includes('report') && !actions.some(a => a.type === 'GENERATE_REPORT')) {
+      actions.push({ type: 'NAVIGATE', path: '/reports', description: 'Navigate to Reports Page' });
+    }
+    if (lowerMessage.includes('product') || lowerMessage.includes('inventory')) {
+      actions.push({ type: 'NAVIGATE', path: '/products', description: 'Navigate to Products Page' });
+    }
+    if (lowerMessage.includes('customer')) {
+      actions.push({ type: 'NAVIGATE', path: '/customers', description: 'Navigate to Customers Page' });
+    }
+    if (lowerMessage.includes('transaction')) {
+      actions.push({ type: 'NAVIGATE', path: '/transactions', description: 'Navigate to Transactions Page' });
+    }
+  }
+
+  return actions;
+};
+
+// Enhanced fallback responses with action integration
 const getFallbackResponse = (message) => {
   const lowerMessage = message.toLowerCase();
+  const actions = detectActions(message);
   
   if (lowerMessage.includes('inventory') || lowerMessage.includes('stock')) {
-    return "I can help you with inventory management! Here are some key features:\n\n• Monitor stock levels and set up low-stock alerts\n• Track product movements and transfers\n• Generate inventory reports and analytics\n• Set up automated reorder points\n• Manage product categories and variations\n\nWould you like me to explain any specific inventory feature?";
+    let response = "I can help you with inventory management! Here are some key features:\n\n• Monitor stock levels and set up low-stock alerts\n• Track product movements and transfers\n• Generate inventory reports and analytics\n• Set up automated reorder points\n• Manage product categories and variations";
+    
+    if (actions.some(a => a.type === 'GENERATE_REPORT' && a.reportType === 'stock')) {
+      response += "\n\n🔄 I'll generate your stock report now...";
+    }
+    return response;
   }
   
   if (lowerMessage.includes('sales') || lowerMessage.includes('sell')) {
-    return "For sales management, I can assist you with:\n\n• Processing sales transactions through POS\n• Analyzing sales performance and trends\n• Managing customer relationships and history\n• Creating sales reports and dashboards\n• Setting up pricing strategies\n• Tracking sales team performance\n\nWhat specific sales aspect would you like to explore?";
+    let response = "For sales management, I can assist you with:\n\n• Processing sales transactions through POS\n• Analyzing sales performance and trends\n• Managing customer relationships and history\n• Creating sales reports and dashboards\n• Setting up pricing strategies\n• Tracking sales team performance";
+    
+    if (actions.some(a => a.type === 'GENERATE_REPORT' && a.reportType === 'sales')) {
+      response += "\n\n📊 Generating your sales report...";
+    }
+    return response;
   }
   
   if (lowerMessage.includes('customer') || lowerMessage.includes('client')) {
@@ -24,7 +86,35 @@ const getFallbackResponse = (message) => {
   }
   
   if (lowerMessage.includes('report') || lowerMessage.includes('analytics')) {
-    return "GT Management offers comprehensive reporting:\n\n• Financial reports (P&L, Balance Sheet, Cash Flow)\n• Sales analytics and performance metrics\n• Inventory turnover and stock reports\n• Customer behavior analysis\n• Production efficiency reports\n• Custom dashboard creation\n\nWhich type of report are you interested in?";
+    let response = "GT Management offers comprehensive reporting:\n\n• Financial reports (P&L, Balance Sheet, Cash Flow)\n• Sales analytics and performance metrics\n• Inventory turnover and stock reports\n• Customer behavior analysis\n• Production efficiency reports\n• Custom dashboard creation";
+    
+    if (actions.length > 0) {
+      const reportActions = actions.filter(a => a.type === 'GENERATE_REPORT');
+      if (reportActions.length > 0) {
+        response += "\n\n📈 I'll generate the requested reports for you...";
+      }
+    } else {
+      response += "\n\nWhich type of report are you interested in? I can generate:\n• Sales reports\n• Purchase reports\n• Expense reports\n• Stock/inventory reports\n• Analytics reports";
+    }
+    return response;
+  }
+  
+  if (lowerMessage.includes('expense') || lowerMessage.includes('cost')) {
+    let response = "Expense management capabilities:\n\n• Track and categorize business expenses\n• Monitor spending patterns and budgets\n• Generate expense reports and analytics\n• Manage vendor payments and invoices\n• Set up approval workflows\n• Integrate with accounting systems";
+    
+    if (actions.some(a => a.type === 'GENERATE_REPORT' && a.reportType === 'expenses')) {
+      response += "\n\n💰 Generating your expense report...";
+    }
+    return response;
+  }
+  
+  if (lowerMessage.includes('purchase') || lowerMessage.includes('procurement')) {
+    let response = "Purchase management features:\n\n• Create and manage purchase orders\n• Track supplier relationships and performance\n• Monitor purchase costs and trends\n• Generate purchase analytics\n• Manage approval workflows\n• Track delivery and payment status";
+    
+    if (actions.some(a => a.type === 'GENERATE_REPORT' && a.reportType === 'purchases')) {
+      response += "\n\n🛒 Generating your purchase report...";
+    }
+    return response;
   }
   
   if (lowerMessage.includes('user') || lowerMessage.includes('permission') || lowerMessage.includes('role')) {
@@ -32,10 +122,10 @@ const getFallbackResponse = (message) => {
   }
   
   if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('help')) {
-    return "Hello! I'm your GT Management AI assistant. I'm here to help you with:\n\n• Product and inventory management\n• Sales transactions and POS operations\n• Customer relationship management\n• Financial reporting and analytics\n• User permissions and system settings\n• Production planning and scheduling\n\nWhat would you like to know about?";
+    return "Hello! I'm your GT Management AI assistant. I can help you with:\n\n• Product and inventory management\n• Sales transactions and POS operations\n• Customer relationship management\n• Financial reporting and analytics\n• User permissions and system settings\n• Production planning and scheduling\n\n💡 Try saying: 'Generate sales report' or 'Show me inventory analytics'";
   }
   
-  return "I'm here to help you with GT Management! I can assist with inventory, sales, customers, reports, user management, and more. Could you please rephrase your question or ask about a specific business area? For example:\n\n• 'How do I manage inventory?'\n• 'Show me sales analytics'\n• 'Help with customer management'\n• 'Explain user permissions'";
+  return "I'm here to help you with GT Management! I can assist with inventory, sales, customers, reports, user management, and more. I can also generate reports and navigate to different sections.\n\n🔧 Try commands like:\n• 'Generate sales report'\n• 'Download inventory report'\n• 'Show analytics dashboard'\n• 'Go to transactions page'";
 };
 
 export async function POST(request) {
@@ -45,6 +135,9 @@ export async function POST(request) {
     if (!message) {
       return Response.json({ error: 'Message is required' }, { status: 400 });
     }
+
+    // Detect actions in the user's message
+    const actions = detectActions(message);
 
     // Try Google Gemini first (primary AI service)
     if (process.env.GOOGLE_AI_API_KEY) {
@@ -63,6 +156,17 @@ export async function POST(request) {
         - Transaction management (purchases, sales, transfers)
         - Cheque management
         
+        IMPORTANT: When users ask to generate, download, export, or create reports, acknowledge their request and mention that you'll help generate the report. Be specific about what type of report they're requesting.
+        
+        Available report types:
+        - Sales reports (revenue, transactions, performance)
+        - Purchase reports (orders, spending, suppliers)
+        - Expense reports (costs, categories, trends)
+        - Stock/Inventory reports (levels, movements, analytics)
+        - Analytics reports (comprehensive business insights)
+        
+        If someone asks for navigation (like "show dashboard" or "go to reports"), acknowledge that you can help them navigate there.
+        
         Provide helpful, accurate, and business-focused responses. Always be professional and concise.
         Current context: ${context || 'General assistance'}
         
@@ -74,6 +178,7 @@ export async function POST(request) {
 
         return Response.json({ 
           response: text,
+          actions: actions,
           source: 'gemini'
         });
 
@@ -94,6 +199,17 @@ export async function POST(request) {
             - Transaction management (purchases, sales, transfers)
             - Cheque management
             
+            IMPORTANT: When users ask to generate, download, export, or create reports, acknowledge their request and mention that you'll help generate the report. Be specific about what type of report they're requesting.
+            
+            Available report types:
+            - Sales reports (revenue, transactions, performance)
+            - Purchase reports (orders, spending, suppliers)
+            - Expense reports (costs, categories, trends)
+            - Stock/Inventory reports (levels, movements, analytics)
+            - Analytics reports (comprehensive business insights)
+            
+            If someone asks for navigation (like "show dashboard" or "go to reports"), acknowledge that you can help them navigate there.
+            
             Provide helpful, accurate, and business-focused responses. Always be professional and concise.
             Current context: ${context || 'General assistance'}`;
 
@@ -112,6 +228,7 @@ export async function POST(request) {
 
             return Response.json({ 
               response: response.content[0].text,
+              actions: actions,
               source: 'anthropic'
             });
 
@@ -126,6 +243,7 @@ export async function POST(request) {
     console.log('Using fallback AI responses - API services not available or failed');
     return Response.json({ 
       response: getFallbackResponse(message),
+      actions: actions,
       source: 'fallback'
     });
 
