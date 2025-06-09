@@ -18,7 +18,7 @@ export function FloatingAIButton() {
             <SheetTrigger asChild>
               <Button
                 size="lg"
-                className="fixed bottom-20 right-4 h-14 w-14 rounded-full shadow-lg z-40 group"
+                className="fixed bottom-20 right-4 h-12 w-12 rounded-full shadow-lg z-40 group"
               >
                 <div className="relative">
                   <Bot className="h-6 w-6  transition-transform group-hover:scale-110" />
@@ -35,7 +35,7 @@ export function FloatingAIButton() {
           <SheetContent className="w-[400px] sm:w-[500px] p-0 flex flex-col">
             <SheetHeader className="p-6 pb-4 border-b flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
+                <div className="flex items-center justify-center w-10 h-10  rounded-full">
                   <Bot className="h-5 w-5 text-white" />
                 </div>
                 <div>

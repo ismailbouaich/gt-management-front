@@ -33,7 +33,7 @@ export default function AIAssistantPage() {
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full">
             <Bot className="h-6 w-6 text-white" />
           </div>
           <div>

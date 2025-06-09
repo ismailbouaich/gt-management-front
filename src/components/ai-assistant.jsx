@@ -212,7 +212,7 @@ export function AIAssistant() {
       <Card className="h-full flex flex-col border-0 shadow-none">
         <CardHeader className="pb-3 border-b flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
+            <div className="flex items-center justify-center w-10 h-10  rounded-full">
               <Sparkles className="h-4 w-4 text-white" />
             </div>
             <div>
@@ -242,7 +242,7 @@ export function AIAssistant() {
                     <AvatarFallback className={
                       message.role === 'user' 
                         ? 'bg-blue-100 text-blue-600' 
-                        : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                        : ' text-white'
                     }>
                       {message.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                     </AvatarFallback>
@@ -320,7 +320,7 @@ export function AIAssistant() {
                 {(isLoading || isProcessingAction) && (
                 <div className="flex items-start gap-3">
                   <Avatar className="w-8 h-8 flex-shrink-0">
-                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                    <AvatarFallback className=" text-white">
                       <Bot className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
