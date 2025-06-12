@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { TagIcon, Plus, Search, RefreshCw, Edit, Trash2 } from "lucide-react"
+import { FolderIcon, Plus, Search, RefreshCw, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -31,114 +31,113 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-export default function BrandsPage() {
-  const [brands, setBrands] = useState([])
+export default function CategoriesPage() {
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [editingBrand, setEditingBrand] = useState(null)
+  const [editingCategory, setEditingCategory] = useState(null)
   const [formData, setFormData] = useState({
     name: '',
     description: ''
   })
 
   useEffect(() => {
-    loadBrands()
+    loadCategories()
   }, [])
-  const loadBrands = async () => {
+  const loadCategories = async () => {
     setLoading(true)
     try {
-      const response = await productService.getBrandsWithDetails()
-      setBrands(response.data)
+      const response = await productService.getCategoriesWithDetails()
+      setCategories(response.data)
     } catch (error) {
-      console.error('Error loading brands:', error)
-      toast.error('Failed to load brands')
+      console.error('Error loading categories:', error)
+      toast.error('Failed to load categories')
     } finally {
       setLoading(false)
     }
   }
-  const handleCreateBrand = async () => {
+
+  const handleCreateCategory = async () => {
     if (!formData.name.trim()) {
-      toast.error('Brand name is required')
+      toast.error('Category name is required')
       return
     }
 
-    if (brands.some(brand => brand.name.toLowerCase() === formData.name.toLowerCase())) {
-      toast.error('Brand already exists')
+    if (categories.some(cat => cat.name.toLowerCase() === formData.name.toLowerCase())) {
+      toast.error('Category already exists')
       return
-    }
-
-    try {
-      const response = await productService.createBrand({
+    }    try {
+      const response = await productService.createCategory({
         name: formData.name.trim(),
         description: formData.description.trim()
       })
       
-      setBrands(prev => [...prev, response.data])
+      setCategories(prev => [...prev, response.data])
       setFormData({ name: '', description: '' })
       setIsCreateDialogOpen(false)
-      toast.success('Brand created successfully')
+      toast.success('Category created successfully')
     } catch (error) {
-      console.error('Error creating brand:', error)
-      toast.error(error.message || 'Failed to create brand')
+      console.error('Error creating category:', error)
+      toast.error(error.message || 'Failed to create category')
     }
   }
 
-  const handleEditBrand = async () => {
+  const handleEditCategory = async () => {
     if (!formData.name.trim()) {
-      toast.error('Brand name is required')
+      toast.error('Category name is required')
       return
     }
 
-    if (brands.some(brand => brand.id !== editingBrand.id && brand.name.toLowerCase() === formData.name.toLowerCase())) {
-      toast.error('Brand already exists')
+    if (categories.some(cat => cat.id !== editingCategory.id && cat.name.toLowerCase() === formData.name.toLowerCase())) {
+      toast.error('Category already exists')
       return
     }
 
     try {
-      setBrands(prev => prev.map(brand => 
-        brand.id === editingBrand.id 
+      setCategories(prev => prev.map(cat => 
+        cat.id === editingCategory.id 
           ? { 
-              ...brand, 
+              ...cat, 
               name: formData.name.trim(),
               description: formData.description.trim(),
               updatedAt: new Date().toISOString()
             }
-          : brand
+          : cat
       ))
       setFormData({ name: '', description: '' })
-      setEditingBrand(null)
+      setEditingCategory(null)
       setIsEditDialogOpen(false)
-      toast.success('Brand updated successfully')
+      toast.success('Category updated successfully')
     } catch (error) {
-      console.error('Error updating brand:', error)
-      toast.error('Failed to update brand')
+      console.error('Error updating category:', error)
+      toast.error('Failed to update category')
     }
   }
 
-  const handleDeleteBrand = async (id, name) => {
+  const handleDeleteCategory = async (id, name) => {
     try {
-      setBrands(prev => prev.filter(brand => brand.id !== id))
-      toast.success(`Brand "${name}" deleted successfully`)
+      setCategories(prev => prev.filter(cat => cat.id !== id))
+      toast.success(`Category "${name}" deleted successfully`)
     } catch (error) {
-      console.error('Error deleting brand:', error)
-      toast.error('Failed to delete brand')
+      console.error('Error deleting category:', error)
+      toast.error('Failed to delete category')
     }
   }
 
-  const startEdit = (brand) => {
-    setEditingBrand(brand)
+  const startEdit = (category) => {
+    setEditingCategory(category)
     setFormData({
-      name: brand.name,
-      description: brand.description
+      name: category.name,
+      description: category.description
     })
     setIsEditDialogOpen(true)
   }
 
-  const filteredBrands = brands.filter(brand =>
-    brand.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    brand.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    category.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const formatDate = (dateString) => {
@@ -154,38 +153,38 @@ export default function BrandsPage() {
       {/* Header */}
       <div className="flex items-center justify-between border-b px-6 py-5">
         <div className="flex items-center gap-2">
-          <TagIcon className="h-6 w-6" />
-          <h1 className="text-xl font-semibold">Brands</h1>
+          <FolderIcon className="h-6 w-6" />
+          <h1 className="text-xl font-semibold">Categories</h1>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => setFormData({ name: '', description: '' })}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Brand
+              Add Category
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Brand</DialogTitle>
+              <DialogTitle>Create New Category</DialogTitle>
               <DialogDescription>
-                Add a new brand to organize your products.
+                Add a new product category to organize your inventory.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="brand-name">Brand Name *</Label>
+                <Label htmlFor="category-name">Category Name *</Label>
                 <Input
-                  id="brand-name"
-                  placeholder="Enter brand name"
+                  id="category-name"
+                  placeholder="Enter category name"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="brand-description">Description</Label>
+                <Label htmlFor="category-description">Description</Label>
                 <Input
-                  id="brand-description"
-                  placeholder="Enter brand description"
+                  id="category-description"
+                  placeholder="Enter category description"
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 />
@@ -195,8 +194,8 @@ export default function BrandsPage() {
               <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleCreateBrand}>
-                Create Brand
+              <Button onClick={handleCreateCategory}>
+                Create Category
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -208,21 +207,21 @@ export default function BrandsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Total Brands</CardDescription>
-              <CardTitle className="text-2xl">{brands.length}</CardTitle>
+              <CardDescription>Total Categories</CardDescription>
+              <CardTitle className="text-2xl">{categories.length}</CardTitle>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="pb-2">
               <CardDescription>Total Products</CardDescription>
-              <CardTitle className="text-2xl">{brands.reduce((sum, brand) => sum + brand.productCount, 0)}</CardTitle>
+              <CardTitle className="text-2xl">{categories.reduce((sum, cat) => sum + cat.productCount, 0)}</CardTitle>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Avg Products per Brand</CardDescription>
+              <CardDescription>Avg Products per Category</CardDescription>
               <CardTitle className="text-2xl">
-                {brands.length > 0 ? Math.round(brands.reduce((sum, brand) => sum + brand.productCount, 0) / brands.length) : 0}
+                {categories.length > 0 ? Math.round(categories.reduce((sum, cat) => sum + cat.productCount, 0) / categories.length) : 0}
               </CardTitle>
             </CardHeader>
           </Card>
@@ -232,8 +231,8 @@ export default function BrandsPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>Brand List</CardTitle>
-              <Button variant="outline" size="sm" onClick={loadBrands}>
+              <CardTitle>Category List</CardTitle>
+              <Button variant="outline" size="sm" onClick={loadCategories}>
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
               </Button>
@@ -245,7 +244,7 @@ export default function BrandsPage() {
                 <div className="relative">
                   <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search brands..."
+                    placeholder="Search categories..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
@@ -254,7 +253,7 @@ export default function BrandsPage() {
               </div>
             </div>
 
-            {/* Brands Table */}
+            {/* Categories Table */}
             <div className="border rounded-lg">
               <Table>
                 <TableHeader>
@@ -273,38 +272,38 @@ export default function BrandsPage() {
                       <TableCell colSpan={6} className="text-center py-8">
                         <div className="flex items-center justify-center">
                           <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                          Loading brands...
+                          Loading categories...
                         </div>
                       </TableCell>
                     </TableRow>
-                  ) : filteredBrands.length === 0 ? (
+                  ) : filteredCategories.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={6} className="text-center py-8">
                         <div className="text-muted-foreground">
-                          {searchTerm ? 'No brands found matching your search' : 'No brands found'}
+                          {searchTerm ? 'No categories found matching your search' : 'No categories found'}
                         </div>
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredBrands.map((brand) => (
-                      <TableRow key={brand.id}>
-                        <TableCell className="font-medium">{brand.name}</TableCell>
+                    filteredCategories.map((category) => (
+                      <TableRow key={category.id}>
+                        <TableCell className="font-medium">{category.name}</TableCell>
                         <TableCell className="text-muted-foreground">
-                          {brand.description || '-'}
+                          {category.description || '-'}
                         </TableCell>
                         <TableCell>
                           <Badge variant="secondary">
-                            {brand.productCount} products
+                            {category.productCount} products
                           </Badge>
                         </TableCell>
-                        <TableCell>{formatDate(brand.createdAt)}</TableCell>
-                        <TableCell>{formatDate(brand.updatedAt)}</TableCell>
+                        <TableCell>{formatDate(category.createdAt)}</TableCell>
+                        <TableCell>{formatDate(category.updatedAt)}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => startEdit(brand)}
+                              onClick={() => startEdit(category)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -316,12 +315,12 @@ export default function BrandsPage() {
                               </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete Brand</AlertDialogTitle>
+                                  <AlertDialogTitle>Delete Category</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to delete "{brand.name}"? 
-                                    {brand.productCount > 0 && (
+                                    Are you sure you want to delete "{category.name}"? 
+                                    {category.productCount > 0 && (
                                       <span className="text-orange-600">
-                                        {" "}This will affect {brand.productCount} products.
+                                        {" "}This will affect {category.productCount} products.
                                       </span>
                                     )}
                                   </AlertDialogDescription>
@@ -329,7 +328,7 @@ export default function BrandsPage() {
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => handleDeleteBrand(brand.id, brand.name)}
+                                    onClick={() => handleDeleteCategory(category.id, category.name)}
                                     className="bg-destructive hover:bg-destructive/90"
                                   >
                                     Delete
@@ -353,26 +352,26 @@ export default function BrandsPage() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Brand</DialogTitle>
+            <DialogTitle>Edit Category</DialogTitle>
             <DialogDescription>
-              Update the brand information.
+              Update the category information.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-brand-name">Brand Name *</Label>
+              <Label htmlFor="edit-category-name">Category Name *</Label>
               <Input
-                id="edit-brand-name"
-                placeholder="Enter brand name"
+                id="edit-category-name"
+                placeholder="Enter category name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-brand-description">Description</Label>
+              <Label htmlFor="edit-category-description">Description</Label>
               <Input
-                id="edit-brand-description"
-                placeholder="Enter brand description"
+                id="edit-category-description"
+                placeholder="Enter category description"
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               />
@@ -382,8 +381,8 @@ export default function BrandsPage() {
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleEditBrand}>
-              Update Brand
+            <Button onClick={handleEditCategory}>
+              Update Category
             </Button>
           </DialogFooter>
         </DialogContent>

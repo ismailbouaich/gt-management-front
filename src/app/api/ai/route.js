@@ -55,6 +55,30 @@ const detectActions = (message) => {
     }
   }
 
+  if (lowerMessage.includes('create product') || lowerMessage.includes('add product')) {
+  actions.push({
+    type: 'CREATE_PRODUCT',
+    description: 'Opening product creation form',
+    path: '/dashboard/products/create'
+  });
+}
+
+if (lowerMessage.includes('create transaction') || lowerMessage.includes('new sale')) {
+  actions.push({
+    type: 'CREATE_TRANSACTION',
+    description: 'Opening transaction form',
+    path: '/dashboard/transactions/sales/create'
+  });
+}
+
+if (lowerMessage.includes('create customer')) {
+  actions.push({
+    type: 'CREATE_CUSTOMER', 
+    description: 'Opening customer creation form',
+    path: '/dashboard/customers/create'
+  });
+}
+
   return actions;
 };
 
