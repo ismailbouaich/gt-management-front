@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,45 +11,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Edit, Trash2, UserPlus, Shield, Mail, Phone } from "lucide-react"
-
-// Mock data
-const mockUsers = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-    role: "Admin",
-    status: "Active",
-    lastLogin: "2024-12-08 10:30 AM",
-    permissions: ["users.create", "users.edit", "users.delete", "reports.view"]
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "+1234567891",
-    role: "Manager",
-    status: "Active",
-    lastLogin: "2024-12-08 09:15 AM",
-    permissions: ["users.view", "reports.view", "products.edit"]
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    email: "mike.johnson@example.com",
-    phone: "+1234567892",
-    role: "Employee",
-    status: "Inactive",
-    lastLogin: "2024-12-07 04:45 PM",
-    permissions: ["products.view", "sales.create"]
-  }
-]
-
-const mockRoles = ["Admin", "Manager", "Employee", "Viewer"]
+import mockData from "@/data/mock-data.json"
 
 export function UserManager() {
-  const [users, setUsers] = useState(mockUsers)
+  const [users, setUsers] = useState([])
+  const [roles, setRoles] = useState([])
   const [selectedUser, setSelectedUser] = useState(null)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
@@ -65,6 +31,28 @@ export function UserManager() {
     status: "Active"
   })
 
+  // Load data from mock file
+  useEffect(() => {
+    if (mockData.users) {
+      // Transform data to match the component's expected format
+      const transformedUsers = mockData.users.map(user => ({
+        id: user.id,
+        name: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        status: user.status,
+        lastLogin: new Date(user.lastLogin).toLocaleString(),
+        permissions: user.permissions || []
+      }))
+      setUsers(transformedUsers)
+    }
+    
+    if (mockData.userRoles) {
+      setRoles(mockData.userRoles.map(role => role.name))
+    }
+  }, [])
+
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -72,10 +60,9 @@ export function UserManager() {
     const matchesStatus = filterStatus === "all" || user.status === filterStatus
     return matchesSearch && matchesRole && matchesStatus
   })
-
   const handleCreateUser = () => {
     const user = {
-      id: users.length + 1,
+      id: `user-${Date.now()}`,
       ...newUser,
       lastLogin: "Never",
       permissions: []
@@ -174,15 +161,14 @@ export function UserManager() {
                   onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
                   placeholder="Enter phone number"
                 />
-              </div>
-              <div>
+              </div>              <div>
                 <Label htmlFor="role">Role</Label>
                 <Select value={newUser.role} onValueChange={(value) => setNewUser({ ...newUser, role: value })}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {mockRoles.map((role) => (
+                    {roles.map((role) => (
                       <SelectItem key={role} value={role}>{role}</SelectItem>
                     ))}
                   </SelectContent>
@@ -256,14 +242,13 @@ export function UserManager() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
-        <Select value={filterRole} onValueChange={setFilterRole}>
+        </div>        <Select value={filterRole} onValueChange={setFilterRole}>
           <SelectTrigger className="w-40">
             <SelectValue placeholder="Filter by role" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Roles</SelectItem>
-            {mockRoles.map((role) => (
+            {roles.map((role) => (
               <SelectItem key={role} value={role}>{role}</SelectItem>
             ))}
           </SelectContent>
@@ -379,15 +364,14 @@ export function UserManager() {
                 value={newUser.phone}
                 onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
               />
-            </div>
-            <div>
+            </div>            <div>
               <Label htmlFor="edit-role">Role</Label>
               <Select value={newUser.role} onValueChange={(value) => setNewUser({ ...newUser, role: value })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {mockRoles.map((role) => (
+                  {roles.map((role) => (
                     <SelectItem key={role} value={role}>{role}</SelectItem>
                   ))}
                 </SelectContent>

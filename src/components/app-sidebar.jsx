@@ -110,8 +110,8 @@ const data = {
       icon: TagIcon,
     },
     {
-      title: "Category",
-      url: "/dashboard/products/category",
+      title: "Categories",
+      url: "/dashboard/products/categories",
       icon: FolderIcon,
     },
     {

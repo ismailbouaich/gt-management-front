@@ -1,94 +1,84 @@
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+
+const mockDataPath = path.join(process.cwd(), 'src', 'data', 'mock-data.json');
+
+function readMockData() {
+  const data = fs.readFileSync(mockDataPath, 'utf8');
+  return JSON.parse(data);
+}
+
+function writeMockData(data) {
+  fs.writeFileSync(mockDataPath, JSON.stringify(data, null, 2));
+}
+
 // Simulate API delay
-const delay = (ms = 200) => new Promise(resolve => setTimeout(resolve, ms))
+const delay = (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
 
 // GET - Fetch single product
 export async function GET(request, { params }) {
   try {
-    await delay()
-    
-    const { id } = params
-    
-    // In a real app, you'd fetch from database
-    // For now, we'll return a mock product
-    const mockProduct = {
-      id: parseInt(id),
-      name: 'Wireless Bluetooth Headphones',
-      sku: `PRD-${String(id).padStart(4, '0')}`,
-      category: 'Electronics',
-      brand: 'Sony',
-      purchasePrice: 75.00,
-      sellingPrice: 120.00,
-      currentStock: 25,
-      minStock: 5,
-      description: 'High-quality wireless headphones with noise cancellation and long battery life.',
-      status: 'In Stock',
-      supplier: 'TechCorp Solutions',
-      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      updatedAt: new Date().toISOString()
+    const productId = params.id;
+    const data = readMockData();
+    const product = data.products?.find(p => p.id === productId);
+
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
-    
-    return Response.json({
-      success: true,
-      data: mockProduct
-    })
-    
+
+    return NextResponse.json(product);
   } catch (error) {
-    console.error('Error fetching product:', error)
-    return Response.json(
-      { success: false, error: 'Failed to fetch product' },
-      { status: 500 }
-    )
+    console.error('Error fetching product:', error);
+    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
   }
 }
 
 // PUT - Update product
 export async function PUT(request, { params }) {
   try {
-    await delay()
+    const productId = params.id;
+    const updates = await request.json();
+    const data = readMockData();
     
-    const { id } = params
-    const body = await request.json()
-    
-    // In a real app, you'd update in database
-    const updatedProduct = {
-      id: parseInt(id),
-      ...body,
-      updatedAt: new Date().toISOString()
+    const productIndex = data.products?.findIndex(p => p.id === productId);
+    if (productIndex === -1) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
-    
-    return Response.json({
-      success: true,
-      message: 'Product updated successfully',
-      data: updatedProduct
-    })
-    
+
+    const updatedProduct = {
+      ...data.products[productIndex],
+      ...updates,
+      updatedAt: new Date().toISOString()
+    };
+
+    data.products[productIndex] = updatedProduct;
+    writeMockData(data);
+
+    return NextResponse.json(updatedProduct);
   } catch (error) {
-    console.error('Error updating product:', error)
-    return Response.json(
-      { success: false, error: 'Failed to update product' },
-      { status: 500 }
-    )
+    console.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
   }
 }
 
 // DELETE - Delete product
 export async function DELETE(request, { params }) {
   try {
-    await delay()
+    const productId = params.id;
+    const data = readMockData();
     
-    const { id } = params
-    
-    // In a real app, you'd delete from database
-    return Response.json({
-      success: true,
-      message: 'Product deleted successfully'
-    })
-    
+    const productIndex = data.products?.findIndex(p => p.id === productId);
+    if (productIndex === -1) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    data.products.splice(productIndex, 1);
+    writeMockData(data);
+
+    return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {
-    console.error('Error deleting product:', error)
-    return Response.json(
-      { success: false, error: 'Failed to delete product' },
-      { status: 500 }
-    )
+    console.error('Error deleting product:', error);
+    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
   }
 }

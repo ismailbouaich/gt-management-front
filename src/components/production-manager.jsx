@@ -54,140 +54,7 @@ import {
   BarChart3,
   DollarSign,
 } from "lucide-react"
-
-// Mock data for production
-const mockProductionOrders = [
-  {
-    id: 1,
-    orderNumber: "PRD-001",
-    productName: "Vanilla Cupcakes",
-    batchSize: 100,
-    status: "In Progress",
-    priority: "High",
-    startDate: "2024-12-08",
-    dueDate: "2024-12-10",
-    assignedTo: "Baker Team A",
-    progress: 65,
-    recipe: "RCP-001",
-    estimatedTime: 8,
-    actualTime: 5.2,
-    materials: ["Flour", "Sugar", "Eggs", "Vanilla Extract"],
-    cost: 250.00,
-  },
-  {
-    id: 2,
-    orderNumber: "PRD-002",
-    productName: "Moisturizing Cream",
-    batchSize: 50,
-    status: "Completed",
-    priority: "Medium",
-    startDate: "2024-12-07",
-    dueDate: "2024-12-08",
-    assignedTo: "Production Team B",
-    progress: 100,
-    recipe: "RCP-002",
-    estimatedTime: 6,
-    actualTime: 5.8,
-    materials: ["Base Cream", "Essential Oils", "Preservatives"],
-    cost: 180.00,
-  },
-  {
-    id: 3,
-    orderNumber: "PRD-003",
-    productName: "Artisan Bread",
-    batchSize: 200,
-    status: "Pending",
-    priority: "Low",
-    startDate: "2024-12-09",
-    dueDate: "2024-12-11",
-    assignedTo: "Baker Team C",
-    progress: 0,
-    recipe: "RCP-003",
-    estimatedTime: 12,
-    actualTime: 0,
-    materials: ["Flour", "Yeast", "Salt", "Water"],
-    cost: 120.00,
-  },
-]
-
-const mockRecipes = [
-  {
-    id: 1,
-    code: "RCP-001",
-    name: "Vanilla Cupcakes",
-    category: "Bakery",
-    batchSize: 100,
-    prepTime: 30,
-    cookTime: 25,
-    totalTime: 55,
-    difficulty: "Easy",
-    ingredients: [
-      { name: "All-purpose flour", quantity: 2, unit: "cups" },
-      { name: "Sugar", quantity: 1.5, unit: "cups" },
-      { name: "Eggs", quantity: 2, unit: "pieces" },
-      { name: "Vanilla extract", quantity: 1, unit: "tsp" },
-      { name: "Baking powder", quantity: 2, unit: "tsp" },
-      { name: "Milk", quantity: 1, unit: "cup" },
-    ],
-    instructions: [
-      "Preheat oven to 350°F",
-      "Mix dry ingredients",
-      "Combine wet ingredients",
-      "Fold together until just combined",
-      "Bake for 20-25 minutes",
-    ],
-    cost: 2.50,
-    notes: "Do not overmix to avoid tough cupcakes",
-  },
-  {
-    id: 2,
-    code: "RCP-002",
-    name: "Moisturizing Cream",
-    category: "Cosmetics",
-    batchSize: 50,
-    prepTime: 45,
-    cookTime: 0,
-    totalTime: 45,
-    difficulty: "Medium",
-    ingredients: [
-      { name: "Base cream", quantity: 500, unit: "ml" },
-      { name: "Jojoba oil", quantity: 30, unit: "ml" },
-      { name: "Vitamin E oil", quantity: 5, unit: "ml" },
-      { name: "Essential oils", quantity: 10, unit: "drops" },
-      { name: "Preservative", quantity: 2, unit: "ml" },
-    ],
-    instructions: [
-      "Heat base cream to room temperature",
-      "Add oils one by one while mixing",
-      "Add preservative last",
-      "Mix thoroughly for 5 minutes",
-      "Test consistency and adjust",
-    ],
-    cost: 3.60,
-    notes: "Ensure all equipment is sterilized",
-  },
-]
-
-const mockQualityChecks = [
-  {
-    id: 1,
-    productionId: 1,
-    checkPoint: "Visual Inspection",
-    status: "Passed",
-    checkedBy: "QA Team",
-    timestamp: "2024-12-08 14:30",
-    notes: "Color and texture look good",
-  },
-  {
-    id: 2,
-    productionId: 1,
-    checkPoint: "Weight Check",
-    status: "Passed",
-    checkedBy: "QA Team",
-    timestamp: "2024-12-08 15:00",
-    notes: "Average weight within tolerance",
-  },
-]
+import mockData from "@/data/mock-data.json"
 
 export function ProductionManager() {
   const [activeTab, setActiveTab] = useState("orders")
@@ -196,10 +63,30 @@ export function ProductionManager() {
   const [priorityFilter, setPriorityFilter] = useState("all")
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState(null)
-  const [orders, setOrders] = useState(mockProductionOrders)
-  const [recipes, setRecipes] = useState(mockRecipes)
-  const [qualityChecks, setQualityChecks] = useState(mockQualityChecks)
+  const [orders, setOrders] = useState([])
+  const [recipes, setRecipes] = useState([])
+  const [qualityChecks, setQualityChecks] = useState([])
+  const [teams, setTeams] = useState([])
+  const [categories, setCategories] = useState([])
+  const [priorities, setPriorities] = useState([])
+  const [statuses, setStatuses] = useState([])
+  const [difficulties, setDifficulties] = useState([])
+  const [units, setUnits] = useState([])
 
+  // Load data from mock file
+  useEffect(() => {
+    if (mockData.production) {
+      setOrders(mockData.production.orders || [])
+      setRecipes(mockData.production.recipes || [])
+      setQualityChecks(mockData.production.qualityChecks || [])
+      setTeams(mockData.production.teams || [])
+      setCategories(mockData.production.categories || [])
+      setPriorities(mockData.production.priorities || [])
+      setStatuses(mockData.production.statuses || [])
+      setDifficulties(mockData.production.difficulties || [])
+      setUnits(mockData.production.units || [])
+    }
+  }, [])
   // Form states for creating new production order
   const [newOrder, setNewOrder] = useState({
     productName: "",
@@ -234,10 +121,9 @@ export function ProductionManager() {
     
     return matchesSearch && matchesStatus && matchesPriority
   })
-
   const handleCreateOrder = () => {
     const order = {
-      id: orders.length + 1,
+      id: Date.now(),
       orderNumber: `PRD-${String(orders.length + 1).padStart(3, '0')}`,
       ...newOrder,
       status: "Pending",
@@ -245,6 +131,9 @@ export function ProductionManager() {
       startDate: new Date().toISOString().split('T')[0],
       actualTime: 0,
       cost: 0,
+      materials: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
     
     setOrders([...orders, order])
@@ -263,11 +152,13 @@ export function ProductionManager() {
 
   const handleCreateRecipe = () => {
     const recipe = {
-      id: recipes.length + 1,
+      id: Date.now(),
       code: `RCP-${String(recipes.length + 1).padStart(3, '0')}`,
       ...newRecipe,
-      totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime),
+      totalTime: parseInt(newRecipe.prepTime || 0) + parseInt(newRecipe.cookTime || 0),
       cost: 0, // Calculate based on ingredients
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
     
     setRecipes([...recipes, recipe])
@@ -400,17 +291,16 @@ export function ProductionManager() {
                       onChange={(e) => setNewOrder({ ...newOrder, batchSize: e.target.value })}
                       placeholder="Enter batch size"
                     />
-                  </div>
-                  <div className="space-y-2">
+                  </div>                  <div className="space-y-2">
                     <Label htmlFor="priority">Priority</Label>
                     <Select value={newOrder.priority} onValueChange={(value) => setNewOrder({ ...newOrder, priority: value })}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="High">High</SelectItem>
-                        <SelectItem value="Medium">Medium</SelectItem>
-                        <SelectItem value="Low">Low</SelectItem>
+                        {priorities.map((priority) => (
+                          <SelectItem key={priority} value={priority}>{priority}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -422,19 +312,16 @@ export function ProductionManager() {
                       value={newOrder.dueDate}
                       onChange={(e) => setNewOrder({ ...newOrder, dueDate: e.target.value })}
                     />
-                  </div>
-                  <div className="space-y-2">
+                  </div>                  <div className="space-y-2">
                     <Label htmlFor="assignedTo">Assigned To</Label>
                     <Select value={newOrder.assignedTo} onValueChange={(value) => setNewOrder({ ...newOrder, assignedTo: value })}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select team" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Baker Team A">Baker Team A</SelectItem>
-                        <SelectItem value="Baker Team B">Baker Team B</SelectItem>
-                        <SelectItem value="Baker Team C">Baker Team C</SelectItem>
-                        <SelectItem value="Production Team A">Production Team A</SelectItem>
-                        <SelectItem value="Production Team B">Production Team B</SelectItem>
+                        {teams.map((team) => (
+                          <SelectItem key={team.id} value={team.name}>{team.name}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -499,17 +386,15 @@ export function ProductionManager() {
                           className="pl-8"
                         />
                       </div>
-                    </div>
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    </div>                    <Select value={statusFilter} onValueChange={setStatusFilter}>
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Filter by status" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Status</SelectItem>
-                        <SelectItem value="Pending">Pending</SelectItem>
-                        <SelectItem value="In Progress">In Progress</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                        <SelectItem value="On Hold">On Hold</SelectItem>
+                        {statuses.map((status) => (
+                          <SelectItem key={status} value={status}>{status}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <Select value={priorityFilter} onValueChange={setPriorityFilter}>
@@ -518,9 +403,9 @@ export function ProductionManager() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Priority</SelectItem>
-                        <SelectItem value="High">High</SelectItem>
-                        <SelectItem value="Medium">Medium</SelectItem>
-                        <SelectItem value="Low">Low</SelectItem>
+                        {priorities.map((priority) => (
+                          <SelectItem key={priority} value={priority}>{priority}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -702,9 +587,8 @@ export function ProductionManager() {
                             )}
                             {check.status}
                           </Badge>
-                        </TableCell>
-                        <TableCell>{check.checkedBy}</TableCell>
-                        <TableCell>{check.timestamp}</TableCell>
+                        </TableCell>                        <TableCell>{check.checkedBy}</TableCell>
+                        <TableCell>{new Date(check.timestamp).toLocaleString()}</TableCell>
                         <TableCell>{check.notes}</TableCell>
                       </TableRow>
                     ))}

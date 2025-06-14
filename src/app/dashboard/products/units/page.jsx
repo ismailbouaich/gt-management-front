@@ -1,4 +1,5 @@
 import { RulerIcon } from "lucide-react"
+import UnitsList from "@/components/units-list"
 
 export default function UnitsPage() {
   return (
@@ -10,14 +11,7 @@ export default function UnitsPage() {
         </div>
       </div>
       <div className="flex-1 overflow-auto p-6">
-        <div className="grid gap-6">
-          <div className="rounded-lg border">
-            <div className="p-6">
-              <h2 className="text-lg font-semibold">Units Management</h2>
-              <p className="text-sm text-muted-foreground">Define and manage units of measurement for your products.</p>
-            </div>
-          </div>
-        </div>
+        <UnitsList />
       </div>
     </div>
   )
