@@ -7,7 +7,7 @@ import { use } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CreateCreditNoteTransaction } from "@/components/create-credit-note-transaction"
-import { getMockDataById } from "@/utils/mock-data"
+import { getMockDataById } from "@/data/mock-data"
 
 export default function CreditNoteEditPage({ params }) {
   const { id } = use(params)
