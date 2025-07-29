@@ -417,7 +417,7 @@ export default function GTManagementLanding() {
               Your Business?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Join thousands of companies already powered by GT Management's lightning-fast platform
+              Join thousands of companies already powered by GT Management&apos;s lightning-fast platform
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
