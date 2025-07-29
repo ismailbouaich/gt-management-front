@@ -266,8 +266,8 @@ export function ReportsManager() {
   )
   
   const filteredPurchases = purchaseData.filter(purchase => 
-    purchase.supplier.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    purchase.status.toLowerCase().includes(searchTerm.toLowerCase())
+    (purchase.supplier && typeof purchase.supplier === 'string' && purchase.supplier.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (purchase.status && typeof purchase.status === 'string' && purchase.status.toLowerCase().includes(searchTerm.toLowerCase()))
   )
   
   const filteredExpenses = expenseData.filter(expense => 

@@ -141,3 +141,282 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes lightning-flash {
+  0%,
+  90%,
+  100% {
+    opacity: 0;
+  }
+  5%,
+  85% {
+    opacity: 1;
+  }
+}
+
+@keyframes electric-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 5px #3ecf8e, 0 0 10px #3ecf8e, 0 0 15px #3ecf8e;
+  }
+  50% {
+    text-shadow: 0 0 10px #00ffb3, 0 0 20px #00ffb3, 0 0 30px #00ffb3;
+  }
+}
+
+@keyframes electric-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(62, 207, 142, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(62, 207, 142, 0.8), 0 0 30px rgba(0, 255, 179, 0.6);
+  }
+}
+
+@keyframes spark-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateY(-10px) rotate(90deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-5px) rotate(180deg);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-15px) rotate(270deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes lightning-bolt {
+  0% {
+    stroke-dasharray: 0 1000;
+    opacity: 0;
+  }
+  10% {
+    stroke-dasharray: 100 1000;
+    opacity: 1;
+  }
+  20% {
+    stroke-dasharray: 200 1000;
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dasharray: 1000 1000;
+    opacity: 0;
+  }
+}
+
+/* Electric Text Effects */
+.electric-text {
+  animation: electric-glow 2s ease-in-out infinite alternate;
+  position: relative;
+}
+
+.electric-text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(62, 207, 142, 0.1) 50%, transparent 70%);
+  animation: lightning-flash 3s infinite;
+  pointer-events: none;
+}
+
+/* Electric Button Effects */
+.electric-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.electric-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.electric-button:hover::before {
+  left: 100%;
+}
+
+.electric-button:hover {
+  animation: electric-pulse 1s ease-in-out infinite;
+  transform: translateY(-2px);
+}
+
+/* Electric Card Effects */
+.electric-card {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.electric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(62, 207, 142, 0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.electric-card:hover::before {
+  opacity: 1;
+}
+
+.electric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(62, 207, 142, 0.2);
+}
+
+/* Electric Hover Effects */
+.electric-hover {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.electric-hover::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3ecf8e, #00ffb3);
+  transition: width 0.3s ease;
+}
+
+.electric-hover:hover::after {
+  width: 100%;
+}
+
+.electric-hover:hover {
+  text-shadow: 0 0 8px rgba(62, 207, 142, 0.6);
+}
+
+/* Lightning Bolt Animation */
+.lightning-bolt {
+  animation: lightning-bolt 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px #3ecf8e);
+}
+
+/* Storm Particles */
+.storm-particles::before,
+.storm-particles::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #3ecf8e;
+  border-radius: 50%;
+  animation: spark-float 4s ease-in-out infinite;
+}
+
+.storm-particles::before {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.storm-particles::after {
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+/* Electric Stats */
+.electric-stat {
+  position: relative;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.electric-stat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 0;
+  background: linear-gradient(to bottom, transparent, #3ecf8e, transparent);
+  transition: height 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.electric-stat:hover::before {
+  height: 100%;
+}
+
+.electric-stat:hover {
+  transform: scale(1.05);
+}
+
+/* Screen Flicker Effect */
+@keyframes screen-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 1;
+  }
+  99.5% {
+    opacity: 0.98;
+  }
+}
+
+body {
+  animation: screen-flicker 8s ease-in-out infinite;
+}
+
+/* Responsive Lightning Effects */
+@media (max-width: 768px) {
+  .lightning-bolt {
+    stroke-width: 1;
+  }
+
+  .electric-text {
+    animation-duration: 3s;
+  }
+
+  .storm-particles::before,
+  .storm-particles::after {
+    width: 1px;
+    height: 1px;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .electric-text,
+  .lightning-bolt,
+  .storm-particles::before,
+  .storm-particles::after,
+  .electric-button:hover,
+  body {
+    animation: none;
+  }
+
+  .electric-card:hover,
+  .electric-stat:hover {
+    transform: none;
+  }
+}

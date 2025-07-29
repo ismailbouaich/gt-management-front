@@ -68,11 +68,15 @@ const data = {
       title: "Production",
       url: "/dashboard/production",
       icon: FactoryIcon,
-    },
-    {
+    },    {
       title: "Customers",
       url: "/dashboard/customers",
       icon: UsersIcon,
+    },
+    {
+      title: "Suppliers",
+      url: "/dashboard/suppliers",
+      icon: TruckIcon,
     },
     {
       title: "Settings",

@@ -63,7 +63,7 @@ const generateDynamicPurchaseData = (startDate, endDate) => {
       purchases.push({
         id: purchases.length + 1,
         date: dateStr,
-        supplier: supplier,
+        supplier: supplier.name, // Fix: use supplier.name instead of entire supplier object
         product: productName,
         quantity: quantity,
         amount: amount,
